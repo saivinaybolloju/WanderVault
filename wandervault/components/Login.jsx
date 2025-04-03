@@ -1,7 +1,14 @@
-import { View, Text,Image,StyleSheet } from 'react-native'
+import { View, Text,Image,StyleSheet,TouchableOpacity } from 'react-native'
 import React from 'react'
 import {Colors} from './../constants/Colors'
+import { useRoute } from '@react-navigation/native'
+import {useRouter} from 'expo-router'
 export default function Login() {
+
+
+const router=useRouter();
+
+
   return (
     <View>
       <Image source={require('./../assets/images/logo1.jpeg')}
@@ -37,9 +44,13 @@ export default function Login() {
         }}>
         Discover  your next adventure effortlessly.
         </Text>
+        <TouchableOpacity onPress={()=>router.push('auth/sign-in')}>
+          
         <Text style={styles.button}>
-            SignIn with Google
+            Get Started
         </Text>
+        </TouchableOpacity>
+        
       </View>
     </View>
   )
