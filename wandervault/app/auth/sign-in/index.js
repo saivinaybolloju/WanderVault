@@ -1,9 +1,12 @@
-import { View, Text,TextInput,StyleSheet } from 'react-native'
+import { View, Text,TextInput,StyleSheet,TouchableOpacity } from 'react-native'
 import React, { useEffect } from 'react'
-import { useNavigation } from 'expo-router'
+import { useNavigation, useRouter } from 'expo-router'
 import {Colors} from './../../../constants/Colors'
+import Ionicons from '@expo/vector-icons/Ionicons';
+
 export default function SignIn() {
     const navigation=useNavigation();
+    const router=useRouter();
 
     useEffect(()=>{
         navigation.setOptions({
@@ -12,11 +15,15 @@ export default function SignIn() {
         },[])
   return (
     <View style={{
-        paddingTop:100,
+        paddingTop:40,
         padding:25,
         backgroundColor:Colors.WHITE,
         height:'100%',
+
     }}>
+        <TouchableOpacity Onpress={()=>router.back()}>
+        <Ionicons name="arrow-back" size={24} color="black" />
+        </TouchableOpacity>
       <Text style={{
         fontFamily:'outfit-bold',
         fontSize:30,
@@ -82,20 +89,23 @@ export default function SignIn() {
                         color:Colors.WHITE,
                         textAlign:'center'
                     }}>
-                        Sign In
+                       Sign In
                     </Text>
                 </View>
 
-                    {/* Create Button */}
+                    {/* Create  Account Button */}
                 <View style={{
                     padding:20,
                     borderRadius:15,
                 }}>
-                    <Text style={{
-                        textAlign:'center'
-                    }}>
-                        Create Account
-                    </Text>
+                    <TouchableOpacity onPress={()=>router.push('auth/sign-up')}>
+                        <Text style={{
+                            textAlign:'center'
+                        }}>
+                            Create Account
+                        </Text>
+                    </TouchableOpacity>
+                    
                 </View>
 
 
