@@ -5,21 +5,75 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from "react-native";
-import React, { useEffect } from "react";
-import { ToastAndroid } from 'react-native';
+import React, { useState, useEffect } from "react";
+import { ToastAndroid,Platform } from 'react-native';
 import { useNavigation, useRouter } from "expo-router";
 import { Colors } from "./../../../constants/Colors";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import {signInWithEmailAndPassword} from 'firebase/auth';
+import {auth} from './../../../configs/FirebaseConfig';
 
 export default function SignIn() {
   const navigation = useNavigation();
   const router = useRouter();
+
+    const [email,setEmail]=useState('');
+    const [password,setPassword]=useState('');
+    const [showPassword, setShowPassword] = useState(false);
+
 
   useEffect(() => {
     navigation.setOptions({
       headerShown: false,
     });
   }, []);
+
+
+  const showToast = (message) => {
+      if (Platform.OS === 'android') {
+        ToastAndroid.show(message, ToastAndroid.SHORT);
+      } else {
+        alert(message); // Web or iOS
+      }
+    };
+
+const onSignIn=()=>{
+
+  if(!email||!password){
+    showToast("Please enter email and password!");
+    return;
+  }
+  signInWithEmailAndPassword(auth, email, password)
+  .then((userCredential) => {
+    // Signed in 
+    const user = userCredential.user;
+    console.log(user);
+    setEmail(''); 
+    setPassword('');
+    showToast("Successfully Signed In!");
+    router.push("/");
+
+    // ...
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    console.log(errorCode,errorMessage);
+    if(errorCode=='auth/invalid-email'){
+      showToast("Invalid Email");
+    }
+    if(errorCode=='auth/invalid-credential'){
+      showToast("Invalid Credentials"
+      );
+    }
+  });
+}
+
+
+
+
+
+  
   return (
     <View
       style={{
@@ -84,7 +138,12 @@ export default function SignIn() {
           >
             Email
           </Text>
-          <TextInput placeholder="Enter Email" style={styles.input}></TextInput>
+          <TextInput placeholder="Enter Email" style={styles.input}
+          autoCapitalize="none"
+          keyboardType="email-address"
+          value={email}
+         onChangeText={(value)=>setEmail(value)} 
+          ></TextInput>
         </View>
 
         {/* PASSWORD */}
@@ -99,17 +158,31 @@ export default function SignIn() {
               fontFamily: "outfit",
             }}
           >
-            Password{" "}
+            Password
           </Text>
+          <View style={styles.passwordInputContainer}>
           <TextInput
-            secureTextEntry={true}
+            secureTextEntry={!showPassword}
             placeholder="Enter Password"
-            style={styles.input}
+            style={styles.inputInner}
+            value={password}
+            onChangeText={(value)=>setPassword(value)}
+            autoCapitalize="none" 
           ></TextInput>
+          <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+            <Ionicons
+              name={showPassword ? "eye-off" : "eye"}
+              size={22}
+              color={Colors.GRAY}
+            />
+          </TouchableOpacity>
+          </View>
+          
         </View>
 
         {/* Sign In Button */}
-        <View
+        <TouchableOpacity
+          onPress={onSignIn}
           style={{
             marginTop: 50,
             padding: 20,
@@ -117,7 +190,7 @@ export default function SignIn() {
             borderRadius: 15,
           }}
         >
-          <Text onPress={()=>{ToastAndroid.show('You are Signed In', ToastAndroid.SHORT);}}
+          <Text 
             style={{
               color: Colors.WHITE,
               textAlign: "center",
@@ -125,7 +198,7 @@ export default function SignIn() {
           >
             Sign In
           </Text>
-        </View>
+        </TouchableOpacity>
 
         {/* Create  Account Button */}
         <View
@@ -157,4 +230,24 @@ const styles = StyleSheet.create({
     marginTop: 15,
     fontFamily: "outfit",
   },
+  inputInner: {
+    flex: 1,
+    fontFamily: "outfit",
+    padding:0,
+    borderWidth:0,
+    ...(Platform.OS === 'web' && { outlineStyle: 'none' })
+  },
+  passwordInputContainer: {
+    padding: 15,
+    borderWidth: 1,
+    borderRadius: 15,
+    borderColor: Colors.GRAY,
+    marginTop: 15,
+    fontFamily: "outfit",
+    position:'relative',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  
 });
