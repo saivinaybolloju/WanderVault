@@ -12,7 +12,11 @@ export default function Index() {
         alignItems:"center",
         
       }}>
+        {user?
+        <Redirect href={'/mytrip'}/>:
         <Login/>
+        }
+        
       </View>
   );
 }

@@ -47,11 +47,12 @@ const onSignIn=()=>{
   .then((userCredential) => {
     // Signed in 
     const user = userCredential.user;
+    router.replace('/mytrip')
     console.log(user);
     setEmail(''); 
     setPassword('');
     showToast("Successfully Signed In!");
-    router.push("/");
+    router.push("/discover");
 
     // ...
   })
