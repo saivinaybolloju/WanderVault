@@ -8,7 +8,7 @@ import { getAuth } from "firebase/auth";
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyBQOsgRnpWICXNpJX-2DzL5A9EwMsbp_ok",
+  apiKey: process.env.EXPO_PUBLIC_FIREBASE_KEY,
   authDomain: "wandervault-v1.firebaseapp.com",
   projectId: "wandervault-v1",
   storageBucket: "wandervault-v1.firebasestorage.app",
