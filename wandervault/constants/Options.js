@@ -24,3 +24,27 @@ export const SelectTravelesList=[
         poeple:'5 to 10'
     },
 ]
+
+export const SelectBudgetOptions=[
+    {
+        id:1,
+        title:'Cheap',
+        desc:'Stay Conscious of costs',
+        icon:'✈️',
+        
+    },
+    {
+        id:2,
+        title:'Moderate',
+        desc:'Keep cost on the average',
+        icon:'💏🏻',
+        
+    },
+    {
+        id:3,
+        title:'Luxury',
+        desc:'Dont  worry about cost',
+        icon:'🏡',
+        
+    },
+]
