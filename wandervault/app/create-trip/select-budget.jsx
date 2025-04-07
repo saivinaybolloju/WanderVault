@@ -1,10 +1,12 @@
-import { View, Text, FlatList } from 'react-native'
-import React from 'react'
+import { View, Text, FlatList, TouchableOpacity } from 'react-native'
+import React,{useEffect,useState} from 'react'
 import OptionCard from './../../components/CreateTrip/OptionCard'
 import {useNavigation} from 'expo-router';
 import { SelectBudgetOptions } from '../../constants/Options';
 export default function SelectBudget() {
   const navigation=useNavigation();
+  const [selectedOption, setSelectedOption] = useState('');
+
 
   useEffect(()=>{
     navigation.setOptions({
@@ -31,19 +33,25 @@ export default function SelectBudget() {
         }}>
           <Text style={{
             fontFamily:'outfit-bold',
-            fontSize:20
-          }}>Choose spending habits for your
-
+            fontSize:20,
+            marginBottom:50,
+          }}>Choose spending habits for your trip 
+          </Text>
 
        <FlatList
          data={SelectBudgetOptions}
-         renderItem={({item,index})=>(
-          <View>
-            <Option Card option={item} selectedOption={selectedOption}/>
-          </View>
+         keyExtractor={(item,index)=> index.toString()}
+         renderItem={({item})=>(
+          <TouchableOpacity onPress={()=>setSelectedOption(item.title)}
+          style={{
+            marginBottom:40,
+          }}>
+
+          
+            <OptionCard option={item} selectedOption={selectedOption}/>
+          </TouchableOpacity>
          )}
          />
-          // </Text>
         </View>
     </View>
   )

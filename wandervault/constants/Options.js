@@ -30,21 +30,21 @@ export const SelectBudgetOptions=[
         id:1,
         title:'Cheap',
         desc:'Stay Conscious of costs',
-        icon:'✈️',
+        icon:'💵',
         
     },
     {
         id:2,
         title:'Moderate',
         desc:'Keep cost on the average',
-        icon:'💏🏻',
+        icon:'💰',
         
     },
     {
         id:3,
         title:'Luxury',
         desc:'Dont  worry about cost',
-        icon:'🏡',
+        icon:'🤑',
         
     },
 ]

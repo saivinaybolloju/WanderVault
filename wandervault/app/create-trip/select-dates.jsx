@@ -1,5 +1,9 @@
 import { View, Text } from 'react-native'
-import React from 'react'
+import { useNavigation,router } from 'expo-router';
+import React,{useContext,useEffect,useState} from 'react'
+import { TouchableOpacity,ToastAndroid } from 'react-native';
+import { Colors } from '../../constants/Colors';
+import { CreateTripContext } from '../../context/CreateTripContext';
 import CalendarPicker from "react-native-calendar-picker";
 import moment from 'moment';
 
@@ -8,7 +12,7 @@ export default function SelectDates() {
     const navigation=useNavigation();
     const[startDate,setStartDate]=useState();
     const[endDate,setEndDate]=useState();
-    const {tripData,setTripData}=useContext(CreateTripContent);
+    const {tripData,setTripData}=useContext(CreateTripContext);
 
      useEffect(()=>{
         navigation.setOptions({
@@ -20,9 +24,9 @@ export default function SelectDates() {
      },[])
      const onDateChange=(date,type)=>{
         console.log(date,type)
-        if(type=='START_DATE'){
+        if(type==='START_DATE'){
 
-            setEndDate(moment(date))
+            setStartDate(moment(date))
 
         }
         else{
@@ -32,11 +36,12 @@ export default function SelectDates() {
      }
      const OnDateSelectionContinue=()=>{
         if(startDate&&!endDate){
-            ToastAndriod.show('Please select Start and end Date',ToastAndriod.LONG)
+            ToastAndroid.show('Please select Start and end Date',ToastAndroid.LONG)
             return ;
         }
         const totalNoOfDays=endDate.diff(startDate,'days');
         console.log(totalNoOfDays+1);
+        router.push('./select-budget');
         setTripData({
             ...tripData,
             startDate:startDate,
@@ -47,7 +52,7 @@ export default function SelectDates() {
 
      }
   return (
-    <View>
+    <View
         style={{
             padding:25,
             paddingTop:75,
@@ -55,10 +60,10 @@ export default function SelectDates() {
             height:'100%'
 
 
-        }}
+        }}>
       <Text style={{
         fontFamily:'outfit-bold',
-        fontsize:35,
+        fontSize:35,
         marginTop:20
       }}>Travel Dates</Text>
       <View style={{
@@ -68,14 +73,24 @@ export default function SelectDates() {
       <CalendarPicker 
       onDateChange={onDateChange}
       allowRangeSelection={true} 
-      minDatde={new Date()}
+      minDate={new Date()}
       maxRangeDuration={5}
+      
       selectedRangeStyle={{
-        backgroundColor:Colors.PRIMARY
-
+        backgroundColor: Colors.PRIMARY,
       }}
-      selectDayTextStyle={{
-        color:Colors.WHITE
+      selectedRangeStartTextStyle={{
+        color: Colors.WHITE
+      }}
+      selectedRangeEndTextStyle={{
+        color: Colors.WHITE
+      }}
+      selectedDayTextStyle={{
+        color: Colors.WHITE
+      }}
+      todayBackgroundColor={'#eee'}
+      todayTextStyle={{
+        color: Colors.BLACK
       }}
       />
     </View>
