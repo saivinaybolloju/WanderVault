@@ -1,13 +1,15 @@
-import { View, Text, FlatList, TouchableOpacity } from 'react-native'
-import React,{useEffect,useState} from 'react'
+import { View, Text, FlatList, TouchableOpacity, ToastAndroid } from 'react-native'
+import React,{useContext, useEffect,useState} from 'react'
 import OptionCard from './../../components/CreateTrip/OptionCard'
-import {useNavigation} from 'expo-router';
+import {useNavigation, useRouter} from 'expo-router';
 import { SelectBudgetOptions } from '../../constants/Options';
+import { Colors } from '../../constants/Colors';
+import { CreateTripContext } from '../../context/CreateTripContext';
 export default function SelectBudget() {
   const navigation=useNavigation();
   const [selectedOption, setSelectedOption] = useState('');
-
-
+  const {tripData,setTripData}=useContext(CreateTripContext);
+  const router=useRouter();
   useEffect(()=>{
     navigation.setOptions({
       headerShown:true,
@@ -16,10 +18,26 @@ export default function SelectBudget() {
     })
 
   },[])
+
+  useEffect(()=>{
+      selectedOption&&setTripData({
+        ...tripData,
+        budget:selectedOption?.title
+      })
+  },[selectedOption] )
+  const onClickContinue=()=>{
+    if(!selectedOption){
+      ToastAndroid.show("Select Your Budget",ToastAndroid.LONG);
+      return ;
+    }
+    router.push('/create-trip/review-trip')
+  }
   return (
     <View  style={{
       paddingTop:75,
-      padding:25
+      padding:25,
+      backgroundColor:Colors.WHITE,
+      height:'100%'
     }}>
       <Text style={{
         fontFamily:'outfit-bold',
@@ -33,6 +51,7 @@ export default function SelectBudget() {
         }}>
           <Text style={{
             fontFamily:'outfit-bold',
+            color:Colors.GRAY,
             fontSize:20,
             marginBottom:50,
           }}>Choose spending habits for your trip 
@@ -45,6 +64,7 @@ export default function SelectBudget() {
           <TouchableOpacity onPress={()=>setSelectedOption(item.title)}
           style={{
             marginBottom:40,
+            marginVertical:10,
           }}>
 
           
@@ -52,7 +72,27 @@ export default function SelectBudget() {
           </TouchableOpacity>
          )}
          />
-        </View>
+
+    </View>
+        <TouchableOpacity 
+        onPress={()=>onClickContinue()}
+        style={{
+            padding:15,
+            backgroundColor:Colors.PRIMARY,
+            borderRadius:15,
+            marginTop:20
+        }}>
+            <Text style={{
+                textAlign:'center',
+                color:Colors.WHITE,
+                fontFamily:'outfit',
+                fontSize:20,
+
+                
+            }}>
+                Continue
+            </Text>
+        </TouchableOpacity>
     </View>
   )
 }
