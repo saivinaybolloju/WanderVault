@@ -29,8 +29,8 @@ export default function StartNewTripCard() {
         marginTop:10,
         gap:25,
         textAlign:'center',
-        fontFamily:'outfit-medium'
-      }}>Looks like its time to plan a new travel experience! Get Started below...</Text>
+        fontFamily:'outfit'
+      }}>Time to plan new travel experience! Get Started below...</Text>
         <TouchableOpacity 
         onPress={()=>{router.push('/create-trip/search-place')}}
         style={{
@@ -38,12 +38,12 @@ export default function StartNewTripCard() {
             backgroundColor:Colors.PRIMARY,
             borderRadius:15,
             paddingHorizontal:30,
-            marginTop:50
+            marginTop:30
         }}>
         <Text style={{
             color:Colors.WHITE,
             fontFamily:'outfit-medium',
-            fontSize:17,
+            fontSize:20,
             
         }}>Start a new Trip</Text>
         </TouchableOpacity>

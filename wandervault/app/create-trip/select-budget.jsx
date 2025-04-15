@@ -20,16 +20,20 @@ export default function SelectBudget() {
   },[])
 
   useEffect(()=>{
-      selectedOption&&setTripData({
-        ...tripData,
-        budget:selectedOption?.title
-      })
+      selectedOption&&setTripData(prev=>({
+        ...prev,
+        budget:selectedOption
+      }));
   },[selectedOption] )
   const onClickContinue=()=>{
     if(!selectedOption){
       ToastAndroid.show("Select Your Budget",ToastAndroid.LONG);
       return ;
     }
+    setTripData(prev=>({
+      ...tripData,
+      budget:selectedOption
+    }));
     router.push('/create-trip/review-trip')
   }
   return (
@@ -47,10 +51,10 @@ export default function SelectBudget() {
       }}>
         Budget</Text>
         <View style={{
-          marginTop:20
+          marginTop:5
         }}>
           <Text style={{
-            fontFamily:'outfit-bold',
+            fontFamily:'outfit',
             color:Colors.GRAY,
             fontSize:20,
             marginBottom:50,
@@ -63,7 +67,7 @@ export default function SelectBudget() {
          renderItem={({item})=>(
           <TouchableOpacity onPress={()=>setSelectedOption(item.title)}
           style={{
-            marginBottom:40,
+            marginBottom:10,
             marginVertical:10,
           }}>
 
@@ -76,11 +80,12 @@ export default function SelectBudget() {
     </View>
         <TouchableOpacity 
         onPress={()=>onClickContinue()}
+        activeOpacity={0.2}
         style={{
             padding:15,
             backgroundColor:Colors.PRIMARY,
             borderRadius:15,
-            marginTop:20
+            marginTop:40
         }}>
             <Text style={{
                 textAlign:'center',

@@ -29,14 +29,14 @@ export default function ReviewTrip() {
         marginTop:20
       }}>ReviewTrip</Text>
       <View style={{
-        marginTop:20
+        marginTop:10,
       }}>
         <Text style={{
             fontFamily:'outfit',
             color:Colors.GRAY,
-
+            fontSize:18
         }}>
-            Before  generating your trip, please review your selection
+            Before  generating your trip... {"\n"}Kindly Please review your selection
         </Text>
 
         {/* Destination Info */}
@@ -46,7 +46,7 @@ export default function ReviewTrip() {
             flexDirection:'row',
             gap:20
         }}>
-            <Ionicons name="location-sharp" size={34} color="black" />
+            <Ionicons name="location-outline" size={34} color="black" />
             <View>
                 <Text style={{
                     fontFamily:'outfit',
@@ -68,7 +68,7 @@ export default function ReviewTrip() {
             flexDirection:'row',
             gap:20
         }}>
-            <Ionicons name="location-sharp" size={34} color="black" />
+            <Ionicons name="calendar-number-outline" size={34} color="black" />
             <View>
                 <Text style={{
                     fontFamily:'outfit',
@@ -78,8 +78,8 @@ export default function ReviewTrip() {
                 <Text style={{
                     fontFamily:'outfit-medium',
                     fontSize:20,
-                }}>{moment(tripData?.startDate).format('DD MMM')+" To "+moment(tripData?.endDate).format('DD MMM')+"  "}</Text>
-                ({tripData?.totalNoOfDays})
+                }}>{moment(tripData?.startDate).format('DD MMM')+" To "+moment(tripData?.endDate).format('DD MMM')+"  "}
+                ({tripData?.totalNoOfDays})</Text>
             </View>
         </View>
 
@@ -91,7 +91,7 @@ export default function ReviewTrip() {
             flexDirection:'row',
             gap:20
         }}>
-            <Ionicons name="location-sharp" size={34} color="black" />
+            <Ionicons name="happy-outline" size={34} color="black" />
             <View>
                 <Text style={{
                     fontFamily:'outfit',
@@ -101,7 +101,7 @@ export default function ReviewTrip() {
                 <Text style={{
                     fontFamily:'outfit-medium',
                     fontSize:20,
-                }}>{tripData?.traveler?.title}
+                }}>{tripData?.traveler}
                 </Text>
             </View>
         </View>
@@ -113,7 +113,7 @@ export default function ReviewTrip() {
             flexDirection:'row',
             gap:20
         }}>
-            <Ionicons name="location-sharp" size={34} color="black" />
+            <Ionicons name="cash-outline" size={34} color="black" />
             <View>
                 <Text style={{
                     fontFamily:'outfit',

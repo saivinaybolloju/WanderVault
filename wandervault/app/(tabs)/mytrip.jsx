@@ -1,11 +1,12 @@
 import { View, Text } from 'react-native'
 import React from 'react'
+import { useRouter } from 'expo-router';
 import { useState } from 'react';
 import { Colors } from '../../constants/Colors'
 import Ionicons from '@expo/vector-icons/Ionicons';
 import StartNewTripCard from '../../components/MyTrips/StartNewTripCard';
 export default function MyTrip() {
-
+  const router=useRouter();
   const[userTrips,setuserTrips]=useState([]);
 
   return (
@@ -23,10 +24,10 @@ export default function MyTrip() {
         justifyContent:'space-between'
       }}>
         <Text style={{
-          fontFamily:'output',
+          fontFamily:'outfit-bold',
           fontSize:35
-        }}>MyTrip</Text>
-        <Ionicons name="add-circle" size={50} color="black" />
+        }}>MyTrips</Text>
+        <Ionicons onPress={()=>{router.push('/create-trip/search-place')}} name="add-circle-outline" size={40} color="black" />
       </View>
       {userTrips?.length==0?
         <StartNewTripCard/>:null
