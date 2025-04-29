@@ -1,25 +1,37 @@
-import { GoogleGenAI } from "@google/genai";
+// // configs/AiModel.js
+// import { GoogleGenerativeAI } from '@google/generative-ai';
 
-const ai = new GoogleGenAI({ apiKey: process.env.EXPO_PUBLIC_GEMINI_AI_KEY});
+// const genAI = new GoogleGenerativeAI({
+//   apiKey: process.env.EXPO_PUBLIC_GEMINI_AI_KEY, // Make sure this key is set in your .env or app config
+// });
 
-    const model=ai.getGenerativeModel({
-        model: "gemini-2.0-flash",
-        generationConfig:{
-            temperature:1,
-            topP:0.95,
-            topK:64,
-            maxOutputTokens:8192,
-            responseMimeType:"application/json"
-        },
-    });
-    export  const chatSession=model.startChart({
-  generationConfig,
-    history:[
+// // For chat-based sessions (optional if needed later)
+// export const startChatSession = async () => {
+//   const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
 
-    ],
-    });
+//   const chatSession = await model.startChat({
+//     history: [],
+//     generationConfig: {
+//       temperature: 1,
+//       topP: 0.95,
+//       topK: 64,
+//       maxOutputTokens: 8192,
+//     },
+//   });
 
+//   return chatSession;
+// };
 
-//     const result=await chatSession.sendMessage("INSERT_INPUT_HERE")
-//   console.log(response.text);
-
+// //This function is used in generative-trip.jsx
+// export const generateGeminiResponse = async (prompt) => {
+//   try {
+//     const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+//     const result = await model.generateContent(prompt);
+//     const response = await result.response;
+//     const text = await response.text();
+//     return text;
+//   } catch (error) {
+//     console.error('Gemini generation error:', error);
+//     throw error;
+//   }
+// };

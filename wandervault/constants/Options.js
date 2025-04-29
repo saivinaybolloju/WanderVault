@@ -48,4 +48,4 @@ export const SelectBudgetOptions=[
         
     },
 ]
-export const AI_Prompt='Generate Travel Plan for Location: {location},  for {totalDays} Days and {totalNight} Night for {traveler} with a {budget} budget with a Flight Price with Booking url, Hotels options list with HotelName, HotelAddress, Price, HotelImage url, geocoordinates, rating descriptions and Places to visit nearby with placeName , Place details, Place Image url ,geocoordinates , ticket pricing , time to travel each of the location for {totalDays} day and {totalNight} night with wach day plan with best time to visit in JSON format';
+export const AI_Prompt='Generate Travel Plan for Location: Tirupathi,  for {totalDays} Days and {totalNight} Night for {traveler} with a {budget} budget with a Flight Price with Booking url, Hotels options list with HotelName, HotelAddress, Price, HotelImage url, geocoordinates, rating descriptions and Places to visit nearby with placeName , Place details, Place Image url ,geocoordinates , ticket pricing , time to travel each of the location for {totalDays} day and {totalNight} night with wach day plan with best time to visit in valid JSON format';
