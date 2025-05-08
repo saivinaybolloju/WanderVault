@@ -1,11 +1,14 @@
  import { View, Text, Image } from 'react-native'
 import React from 'react'
 import moment from 'moment'
+import { TouchableOpacity } from 'react-native';
+import { useRouter } from 'expo-router';
 import { Colors } from '../../constants/Colors'
 import UserTripCard from'./UserTripCard'
 export default function UserTripList({userTrips}) {
-  const LatestTrip=JSON.parse(userTrips[0].tripData)
+  const LatestTrip=userTrips[0].tripData;
   const router=useRouter();
+  if (!userTrips || userTrips.length === 0) return null; 
   return (
     <View>
       <View style={{
@@ -17,44 +20,44 @@ export default function UserTripList({userTrips}) {
           style={{
             width:'100%',
               height:240,
-              objectFit:'cover',
+              
               borderRadius:15
 
-          }}/>
+          }}
+          resizeMode="cover"/>
         
           :
             <Image
-             source={require('./../../assets/images/placeholder.jpeg')}
+             source={require('./../../assets/images/logo1.jpeg')}
             style={{
               width:'100%',
               height:240,
-              objectFit:'cover',
               borderRadius:15
             }}
-            
+            resizeMode="cover"
             />}
             <View style={{marginTop:10}}>
                 <Text style={{
                 fontFamily:'outfit-medium',
-                fontsize:20
+                fontSize:20
               }}>{userTrips[0].tripPlan?.travelPlan?.location}</Text>
               <View style={{
                 display:'flex',
                 flexDirection:'row',
-                justifycontent:'space-between',marginTop:5
+                justifyContent:'space-between',marginTop:5
               }}>
 
               
            <Text style={{
             fontFamily:'outfit',
-            fontsize:17,
+            fontSize:17,
             color:Colors.GRAY
            }}>{moment(LatestTrip.startDate).format('DD MM yyyy')}</Text>
         <Text style={{
           fontFamily:'outfit',
-          fontsize:17,
+          fontSize:17,
           color:Colors.GRAY
-        }}>buspic{LatestTrip.traveler.title}</Text>
+        }}>{LatestTrip.traveler?.title || "Unknown"}</Text>
            
             </View>
             <TouchableOpacity 
@@ -77,9 +80,8 @@ export default function UserTripList({userTrips}) {
 
             </TouchableOpacity>
         </View>
-        {userTrips.map((trip,index)=>(
-         <UserTripCard trip={trip} key={index}/>
-        ))}
+        {userTrips.slice(1).map((trip, index) => ( 
+  <UserTripCard trip={trip} key={index + 1}/>))}
         </View>
     </View>
   )
