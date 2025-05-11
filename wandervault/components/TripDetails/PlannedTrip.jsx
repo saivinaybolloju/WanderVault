@@ -1,10 +1,19 @@
-
-import { View, Text, Image } from 'react-native';
-import React from 'react';
-import Colors from '../constants/Colors'; // Adjust if you use a color file
+import { View, Text, Image,TouchableOpacity } from 'react-native';
+import { Colors } from '../../constants/Colors';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
 export default function PlannedTrip({ details }) {
+    if (!details || typeof details !== 'object') {
+      return (
+        <View style={{ marginTop: 20 }}>
+          <Text style={{ fontFamily: 'outfit', fontSize: 17, color: 'red' }}>
+            No plan details available.
+          </Text>
+        </View>
+      );
+    }
+
+
   return (
     <View style={{ marginTop: 20 }}>
       <Text style={{ fontSize: 20, fontFamily: 'outfit-bold' }}>
@@ -12,8 +21,7 @@ export default function PlannedTrip({ details }) {
       </Text>
 
       {Object.entries(details).reverse().map(([day, dayDetails], dayIndex) => (
-        <View s
-        >
+        <View key={dayIndex}>
           <Text
             style={{
               fontFamily: 'outfit-medium',
@@ -25,15 +33,15 @@ export default function PlannedTrip({ details }) {
           </Text>
 
           {dayDetails.plan.map((place, index) => (
-            <View style={{
+            <View key={index} style={{
               backgroundColor:Colors.LIGHT_BLUE,
                 padding:10,
                 borderRadius:15,
                 borderColor:Colors.GRAY,
-                marginTop
+                marginTop:10
             }}>
               <Image
-                source={require('./../../assets/images/placeholder.jpeg')}
+                source={{uri:place?.placeImageUrl}}
                 style={{
                   width: '100%',
                   height: 120,
@@ -49,6 +57,11 @@ export default function PlannedTrip({ details }) {
                 >
                   {place?.placeName}
                 </Text>
+                <TouchableOpacity>
+                  <Text >
+                    Visit in Maps
+                  </Text>
+                </TouchableOpacity>
                 <Text
                   style={{
                     fontFamily: 'outfit',
@@ -82,14 +95,7 @@ export default function PlannedTrip({ details }) {
                     fontFamily:'outfit-bold'
                 }}>{place?.timeToTravel}</Text></Text>
                 </View>
-                <TouchableOpacity style={{
-                    backgroundColor:Colors.PRIMARY,
-                    padding:8,
-                    borderRadius:7
-
-                }}>
-                <Ionicons name="navigate" size={20} color="white" />
-                </TouchableOpacity>
+                
                 </View>
               </View>
             </View>

@@ -1,15 +1,39 @@
-import { View, Text } from 'react-native'
-import React from 'react'
+import { View, Text,TouchableOpacity,Linking } from 'react-native'
+import {Colors} from "../../constants/Colors"
+import { useEffect } from 'react';
 
-export default function FlightInfo({FlightData}) {
+export default function FlightInfo({flightData}) {
+    useEffect(()=>{
+      console.log("New",flightData);
+    });
+
+  if(!flightData){
+    return (
+      <View style={{ marginTop: 20 }}>
+        <Text style={{ fontFamily: 'outfit', fontSize: 17, color: 'red' }}>
+          No flight data available.
+        </Text>
+      </View>
+    );
+  }
+  const handleBooking = async () => {
+    if (flightData.bookingUrl) {
+    const supported = await Linking.canOpenURL(flightData.bookingUrl);
+    if (supported) {
+      Linking.openURL(flightData.bookingUrl);
+    } else {
+      alert("Can't open this URL.");
+    }
+  }
+  };
   return (
     <View style={{
         marginTop:20,
-        borderWidth:1,
         backgroundColor:Colors.LIGHT_GRAY,
         padding:10,
-        borderRadius:15
+        borderBottomWidth:1
     }}>
+      
         <View style={{
             display:'flex',
             flexDirection:'row',
@@ -19,10 +43,12 @@ export default function FlightInfo({FlightData}) {
         }}>
         <Text style={{
         fontFamily:'outfit-bold',
-        fontsize:20
+        fontSize:20
 
-      }}>-Flights</Text>
-        <TouchableOpacity style={{
+      }}>Flights</Text>
+        <TouchableOpacity 
+        onPress={handleBooking}
+        style={{
         backgroundColor:Colors.PRIMARY,
         padding:5,
         width:100,
@@ -39,15 +65,15 @@ export default function FlightInfo({FlightData}) {
       
       <Text style={{
         fontFamily:'outfit',
-        fontsize:17,
+        fontSize:17,
         marginTop:7
 
 
       }}
-      >Airline:Delta</Text>
+      >Airline:{flightData.airline}</Text>
       <Text style={{
         fontFamily:'outfit',
-        fontsize:17
+        fontSize:17
 
       }}
       >Price: {flightData.price}</Text>

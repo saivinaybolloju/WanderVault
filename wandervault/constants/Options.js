@@ -48,4 +48,46 @@ export const SelectBudgetOptions=[
         
     },
 ]
-export const AI_Prompt='Generate Travel Plan for Location: Tirupathi,  for {totalDays} Days and {totalNight} Night for {traveler} with a {budget} budget with a Flight Price with Booking url, Hotels options list with HotelName, HotelAddress, Price, HotelImage url, geocoordinates, rating descriptions and Places to visit nearby with placeName , Place details, Place Image url ,geocoordinates , ticket pricing , time to travel each of the location for {totalDays} day and {totalNight} night with wach day plan with best time to visit in valid JSON format';
+export const AI_Console_Prompt='Generate Travel Plan for Location: {location},  for {totalDays} Days and {totalNight} Night for {traveler} with a {budget} budget with a Flight Price with Booking url, Hotels options list with HotelName, HotelAddress, Price, HotelImage url, geocoordinates, rating descriptions and Places to visit nearby with placeName , Place details, Place Image url ,geocoordinates , ticket pricing , time to travel each of the location for {totalDays} day and {totalNight} night with wach day plan with best time to visit in valid JSON format';
+export const AI_Prompt=`Generate a detailed travel plan in strict and valid JSON format for a trip to {location} for {totalDays} days and {totalNight} nights, for a {traveler} with a {budget} budget.
+
+The JSON should include:
+1. location: Destination name.
+2. startDate: Mentioned date.
+3. traveler: Mentioned traveler (e.g., Solo, Couple, Family, Group).
+4. budget: Mentioned budget tier (e.g., Cheap, Moderate, Luxury).
+5. flightData: { 
+   airline: string, 
+   price: string, 
+   bookingUrl: string 
+}
+6. hotelList: An array of at least 3 hotel options with:
+   - hotelName
+   - hotelAddress
+   - price
+   - hotelImageUrl
+   - geoCoordinates: { latitude, longitude }
+   - rating
+   - description
+
+7. travelPlan: A breakdown per day as:
+{
+  day1: {
+    bestTimeToVisit: string,
+    plan: [
+      {
+        placeName: string,
+        placeDetails: string,
+        placeImageUrl: string,
+        geoCoordinates: { latitude, longitude },
+        ticketPricing: string,
+        timeToTravel: string
+      }
+    ]
+  },
+  day2: { ... },
+  ...
+}
+
+Ensure all days are structured similarly and consistently. The data must be human-like, static, and deterministic for each run (no variation). Avoid random or varying output for the same inputs. Only return JSON.
+`;

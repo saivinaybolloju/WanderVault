@@ -1,8 +1,8 @@
 import { View, Text, Image } from 'react-native';
-import React, { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Colors } from '../../constants/Colors';
 import { CreateTripContext } from '../../context/CreateTripContext';
-import { AI_Prompt } from '../../constants/Options';
+import { AI_Prompt,AI_Console_Prompt } from '../../constants/Options';
 import { auth, db } from './../../configs/FirebaseConfig';
 import { doc, setDoc } from 'firebase/firestore';
 import { useRouter } from 'expo-router';
@@ -27,13 +27,19 @@ export default function GenerateTrip() {
     setLoading(true);
     try {
       const FINAL_PROMPT = AI_Prompt
-        // .replace(/{location}/g, tripData?.locationInfo?.name)
+        .replace(/{location}/g, tripData?.locationInfo?.name)
+        .replace(/{totalDays}/g, tripData.totalNoOfDays)
+        .replace(/{totalNight}/g, tripData.totalNoOfDays - 1)
+        .replace(/{traveler}/g, tripData.traveler)
+        .replace(/{budget}/g, tripData.budget);
+        const FINAL_CONSOLE_PROMPT = AI_Console_Prompt
+        .replace(/{location}/g, tripData?.locationInfo?.name)
         .replace(/{totalDays}/g, tripData.totalNoOfDays)
         .replace(/{totalNight}/g, tripData.totalNoOfDays - 1)
         .replace(/{traveler}/g, tripData.traveler)
         .replace(/{budget}/g, tripData.budget);
 
-      console.log("FINAL_PROMPT: ", FINAL_PROMPT);
+      console.log("FINAL_PROMPT: ", FINAL_CONSOLE_PROMPT);
 
       const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash-lite" });
       const result = await model.generateContent(FINAL_PROMPT);

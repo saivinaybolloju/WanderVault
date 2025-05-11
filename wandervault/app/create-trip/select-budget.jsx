@@ -5,6 +5,7 @@ import {useNavigation, useRouter} from 'expo-router';
 import { SelectBudgetOptions } from '../../constants/Options';
 import { Colors } from '../../constants/Colors';
 import { CreateTripContext } from '../../context/CreateTripContext';
+import { Platform, Alert } from 'react-native';
 export default function SelectBudget() {
   const navigation=useNavigation();
   const [selectedOption, setSelectedOption] = useState('');
@@ -26,9 +27,13 @@ export default function SelectBudget() {
       }));
   },[selectedOption] )
   const onClickContinue=()=>{
-    if(!selectedOption){
-      ToastAndroid.show("Select Your Budget",ToastAndroid.LONG);
-      return ;
+    if (!selectedOption) {
+      if (Platform.OS === 'android') {
+        ToastAndroid.show("Select Your Budget", ToastAndroid.LONG);
+      } else {
+        Alert.alert("Validation", "Select Your Budget");
+      }
+      return;
     }
     setTripData(prev=>({
       ...tripData,

@@ -17,11 +17,12 @@ export default function MyTrip() {
   useEffect(()=>{
     if(user){
       setLoading(true)
-      user&&GetMyTrips(user);
+      GetMyTrips(user);
     }
   },[user])
     const GetMyTrips=async(user)=>{
       setLoading(true);
+      try{
       const q=query(collection(db,'UserTrips'), where('userEmail','==',user.email));
       const querySnapshot=await getDocs(q);
 
@@ -29,8 +30,11 @@ export default function MyTrip() {
       .map((doc) => doc.data())
       .sort((a, b) => b.createdAt - a.createdAt);
       setuserTrips(trips);
+    }catch (error) {
+      console.error('Error fetching trips:', error);
+    } finally {
       setLoading(false);
-  
+    }
     }
   return (
     <ScrollView style={{

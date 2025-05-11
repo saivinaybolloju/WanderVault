@@ -1,18 +1,25 @@
-import { View, Text,Image } from 'react-native'
+import { View, Text,Image,TouchableOpacity, ScrollView } from 'react-native'
 import React from 'react'
 import moment from 'moment'
+import { useRouter } from 'expo-router';
 import { Colors } from '../../constants/Colors'
 
 export default function UserTripCard({trip}) {
-  
+  const router=useRouter();
   const data =trip.tripData;
   if (!data) return null;
+  const imageUrl = data?.photoRef
+  ? { uri: `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${data.photoRef}&key=${process.env.EXPO_PUBLIC_GEMINI_AI_KEY}` }
+  : require('./../../assets/images/logo1.jpeg');
+
   return (
-    <View style={{
+    <>
+   
+        <View style={{
         margin:15,
         display:'flex',
         flexDirection:'column',
-        gap:10,
+        gap:2,
         alignItems:'center'
     }}>
       <Image source={require('./../../assets/images/logo1.jpeg')}
@@ -22,21 +29,11 @@ export default function UserTripCard({trip}) {
         borderRadius:15
       }}
         />
-        {data?.locationInfo?.photoRef && (
-          <Image source={{uri:'https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference='+data?.locationInfo?.photoRef+'&key='+process.env.EXPO_PUBLIC_GOOGLE_MAP_KEY}}
-                  style={{
-                    width:'100%',
-                      height:240,
-                      
-                      borderRadius:15
-                  }}
-                  resizeMode='cover'
-          />
-        )}
+        
         <Text style={{
           fontFamily:'outfit-medium',
           fontSize:18,
-        }}>{data?.travelPlan?.location || "Unknown"}</Text>
+        }}>{data?.location ||"Use Maps API-UserTripCard"}</Text>
        <Text style={{
         fontFamily:'outfit',
         fontSize:14,
@@ -46,7 +43,30 @@ export default function UserTripCard({trip}) {
         fontFamily:'outfit',
         fontSize:14,
         color:Colors.GRAY
-       }}>Travelling: {data?.traveler?.title || 'Unknown'}</Text>
+       }}>Travelling: {data?.traveler || 'Use Maps API-UserTripCard'}</Text>
+       <TouchableOpacity 
+                   onPress={()=>router.push({pathname:'/trip-details',params:{
+                     trip:JSON.stringify(trip)
+       
+                   }})}
+                    style={{
+                     backgroundColor:Colors.PRIMARY,
+                     padding:10,
+                     borderRadius:10,
+                     
+                   }}>
+                     <Text style={{
+                       color:Colors.WHITE,
+                       textAlign:'center',
+                       fontFamily:'outfit-medium',
+                       fontSize:15
+                     }}>Know More</Text>
+       
+                   </TouchableOpacity>
     </View>
+   
+    </>
+    
+    
   )
 }

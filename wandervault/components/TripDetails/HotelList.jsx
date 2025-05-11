@@ -1,4 +1,4 @@
-import { View, Text, FlatList } from 'react-native'
+import { View, Text, FlatList,Image } from 'react-native'
 import React from 'react'
 
 export default function HotelList({hotelList}) {
@@ -13,19 +13,20 @@ export default function HotelList({hotelList}) {
 
       <FlatList
       data={hotelList}
+      keyExtractor={(item, index) => index.toString()}
       style={{
         marginTop:8
       }}
       showsHorizontalScrollIndicator={false}
       horizontal={true}
-      renderItem={({item,index})=>(
+      renderItem={({item})=>(
         <View style={{
             marginRight:20,
             width:180,
            
 
         }}>
-            <Image source={required('./../../assests/images/placeHolder.jpeg')}
+            <Image source={{uri:item.hotelImageUrl}}
             style={{
                 width:180,
                 height:120,

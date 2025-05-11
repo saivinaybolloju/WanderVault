@@ -1,46 +1,42 @@
- import { View, Text, Image } from 'react-native'
+ import { View, Text, Image,TouchableOpacity } from 'react-native'
 import React from 'react'
 import moment from 'moment'
-import { TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Colors } from '../../constants/Colors'
 import UserTripCard from'./UserTripCard'
 export default function UserTripList({userTrips}) {
-  const LatestTrip=userTrips[0].tripData;
+
   const router=useRouter();
   if (!userTrips || userTrips.length === 0) return null; 
+    const LatestTrip = userTrips[0];
+    const tripData = LatestTrip?.tripData || {};
+  const travelPlan = LatestTrip?.travelPlan || {};
+//   console.log('LatestTrip:', LatestTrip);
+// console.log('\ntripData-location:', tripData.location);
+  const imageUrl = travelPlan?.day1?.plan?.[0]?.placeImageUrl
+    ? {uri: travelPlan.day1.plan[0].placeImageUrl}
+    : require('./../../assets/images/logo1.jpeg');
+
+
   return (
     <View>
       <View style={{
         marginTop:20 
-      }}></View>
-        <View>
-           {LatestTrip?.locationInfo?.photoRef?
-          <Image source={{uri:'https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference='+LatestTrip.locationInfo?.photoRef+'&key='+process.env.EXPO_PUBLIC_GOOGLE_MAP_KEY}}
-          style={{
-            width:'100%',
-              height:240,
-              
-              borderRadius:15
-
-          }}
-          resizeMode="cover"/>
-        
-          :
-            <Image
-             source={require('./../../assets/images/logo1.jpeg')}
-            style={{
-              width:'100%',
-              height:240,
-              borderRadius:15
-            }}
-            resizeMode="cover"
-            />}
+      }}>
+        <Image
+        source={imageUrl}
+        style={{
+          width: '100%',
+          height: 240,
+          borderRadius: 15,
+        }}
+        resizeMode="cover"
+      />
             <View style={{marginTop:10}}>
                 <Text style={{
                 fontFamily:'outfit-medium',
                 fontSize:20
-              }}>{userTrips[0].tripPlan?.travelPlan?.location}</Text>
+              }}>{tripData?.location}</Text>
               <View style={{
                 display:'flex',
                 flexDirection:'row',
@@ -52,17 +48,17 @@ export default function UserTripList({userTrips}) {
             fontFamily:'outfit',
             fontSize:17,
             color:Colors.GRAY
-           }}>{moment(LatestTrip.startDate).format('DD MM yyyy')}</Text>
+           }}>{moment(LatestTrip.startDate).format('DD MMM yyyy')}</Text>
         <Text style={{
           fontFamily:'outfit',
           fontSize:17,
           color:Colors.GRAY
-        }}>{LatestTrip.traveler?.title || "Unknown"}</Text>
+        }}>{tripData.traveler}</Text>
            
             </View>
             <TouchableOpacity 
             onPress={()=>router.push({pathname:'/trip-details',params:{
-              trip:JSON.stringify(userTrips[0])
+              trip:JSON.stringify(LatestTrip)
 
             }})}
              style={{

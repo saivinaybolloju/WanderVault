@@ -1,7 +1,10 @@
-import { View, Text, Image} from 'react-native'
+import { View, Text, Image, ScrollView, Linking} from 'react-native'
 import React, { useState, useEffect } from 'react';  
 import { useNavigation } from '@react-navigation/native';
 import { useLocalSearchParams } from 'expo-router';
+import FlightInfo from './../../components/TripDetails/FlightInfo' ;
+import HotelList from '../../components/TripDetails/HotelList';
+import PlannedTrip from '../../components/TripDetails/PlannedTrip';
 import { Colors } from '../../constants/Colors';
 import moment from 'moment'
 
@@ -9,77 +12,114 @@ export default function TripDetails() {
 
   const navigation=useNavigation();
   const {trip}=useLocalSearchParams();
-  const [tripDetails,setTripDetails]=useState([]);
+  const [tripDetails,setTripDetails]=useState(null);
+  const [loading, setLoading] = useState(true);
   // const formatData=(data)=>{
   //   return JSON.parse(data);
   // }
-
+  
   useEffect(()=>{
+    
+    
     navigation.setOptions({
         headerShown:true,
         headerTransparent:true,
         headerTitle:''
     });
-      setTripDetails(JSON.parse(trip))
+    if(trip){
+       try {
+        const parsedTrip=JSON.parse(trip);
+        console.log("Received trip data: ", parsedTrip); 
+      setTripDetails(parsedTrip);
+      setLoading(false);
+    } catch (error) {
+      console.error('Error parsing trip data:', error);
+    }
+    }
+      
   },[])
+  
+if (loading || !tripDetails) {
+  return (
+    <View style={{ padding: 20 }}>
+      <Text style={{ fontFamily: 'outfit', fontSize: 18 }}>Loading trip...</Text>
+    </View>
+  );
+}
+  const data=tripDetails.tripData||{};
+  const photoRef = data?.locationInfo?.photoRef;
+  const imageUrl = photoRef
+    ? `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${photoRef}&key=${process.env.EXPO_PUBLIC_GOOGLE_MAP_KEY}`
+    : require('./../../assets/images/logo1.jpeg');
 
-  const formattedTripData = trip?.tripData; 
 
   return (
-    <View>
-      {tripDetails&&(
-        <>
+    <View style={{ flex: 1 }}>
+      
+        <ScrollView>
 
-        <Image source={{uri:'https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference='+ formattedTripData?.locationInfo?.photoRef+'&key='+process.env.EXPO_PUBLIC_GOOGLE_MAP_KEY}}
+        <Image source={typeof imageUrl === 'string' ? { uri: imageUrl } : imageUrl}
                   style={{
                     width:'100%',
                       height:300,
-                      
-        
                   }}
-                  resizeMode='cover'/>
+                  resizeMode='cover'
+        />
         <View style={{
-                    padding:15,
+                    padding:20,
                     backgroundColor:Colors.WHITE,
-                    height:'100%',
                     marginTop:-30,
                     borderTopLeftRadius:30,
                     borderTopRightRadius:30
 
                   }}>
                     <Text style={{
-                      fontSize:25,
+                      fontSize:22,
                       fontFamily:'outfit-bold'
                     }}>
-                      {tripDetails?.tripPlan?.travelPlan?.location||"Location not available"}
+                      {data?.location}
                     </Text>
                     <View style={{
                       display:'flex',
                       flexDirection:'row',
                       gap:5,
-                      marginTop:5
+                      
                     }}>
                     <Text style={{
                             fontFamily:'outfit',
-                            fontSize:18,
+                            fontSize:16,
                             color:Colors.GRAY
-                           }}>{moment(formattedTripData?.startDate).format('DD MMM yyyy')}</Text>
+                           }}>{moment(tripDetails.startDate).format('DD MMM yyyy')}</Text>
+
                            <Text style={{
                             fontFamily:'outfit',
-                            fontSize:17,
+                            fontSize:16,
                             color:Colors.GRAY
-                           }}>- {moment(formattedTripData?.endDate).format('DD MMM yyyy')}</Text>
+                           }}>- {moment(tripDetails.endDate).format('DD MMM yyyy')}</Text>
+
                   </View>
                   <Text style={{
                             fontFamily:'outfit',
-                            fontsize:17,
+                            fontsize:15,
                             color:Colors.GRAY
-                          }}>buspic{formattedTripData?.traveler?.title||"Unknown"}
-                          </Text>
+                          }}>{data?.traveler}
+                  </Text>
         </View>
-                  {/*flight info */}
+        <View style={{margin:10, borderRadius:10, padding:20, paddingTop:0,backgroundColor:Colors.WHITE}}>
+                   {/*flight info */}
+                  {data?.flightData && <FlightInfo flightData={data.flightData} />}
 
                   {/* hotels list*/}  
-        </>)}</View>
+                  {data?.hotelsList && <HotelList hotelList={data.hotelsList} />}
+
+                   {/* Trip Day Planner Info */}
+                  {data?.travelPlan && <PlannedTrip details={data.travelPlan} />}
+        </View>
+                 
+
+                          
+
+        </ScrollView>
+        </View>
   )
 }
