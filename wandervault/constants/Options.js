@@ -78,7 +78,7 @@ The JSON should include:
       {
         placeName: string,
         placeDetails: string,
-        placeImageUrl: string,
+        placeImageUrl: string,{photoRef which can be acessed with google maps api}
         geoCoordinates: { latitude, longitude },
         ticketPricing: string,
         timeToTravel: string
