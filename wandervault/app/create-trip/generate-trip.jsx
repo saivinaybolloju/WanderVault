@@ -14,11 +14,15 @@ const genAI = new GoogleGenerativeAI(API_KEY)//
 export default function GenerateTrip() {
   const { tripData, setTripData } = useContext(CreateTripContext);
   const [loading, setLoading] = useState(false);
+  const [hasGenerated, setHasGenerated] = useState(false);
   const router = useRouter();
   const user = auth.currentUser;
 
   useEffect(() => {
-    tripData && GenerateAITrip();
+     if (tripData && !hasGenerated) {
+    setHasGenerated(true); 
+    GenerateAITrip();
+  }
   }, [tripData]);
 
   const GenerateAITrip = async () => {

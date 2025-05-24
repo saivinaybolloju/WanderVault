@@ -2,6 +2,7 @@ import { View, Text, FlatList,Image } from 'react-native'
 import React from 'react'
 
 export default function HotelList({hotelList}) {
+  
   return (
     <View style={{
         marginTop:20
@@ -9,7 +10,7 @@ export default function HotelList({hotelList}) {
       <Text style={{
         fontFamily:'outfit-bold',
         fontSize:20
-      }}> emoji Hotel Recommendation</Text>
+      }}>Hotel Recommendation</Text>
 
       <FlatList
       data={hotelList}

@@ -47,11 +47,14 @@ if (loading || !tripDetails) {
   );
 }
   const data=tripDetails.tripData||{};
-  const photoRef = data?.locationInfo?.photoRef;
+  const photoRef = data.photoRef;
   const imageUrl = photoRef
-    ? `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${photoRef}&key=${process.env.EXPO_PUBLIC_GOOGLE_MAP_KEY}`
+    ? `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${photoRef}&key=${process.env.EXPO_PUBLIC_GOOGLE_MAP_KEY}`
     : require('./../../assets/images/logo1.jpeg');
-
+    // console.log("Hello Worldd",data);
+    // console.log("photoRef",photoRef);
+    // console.log("Hello2 ",tripDetails);
+    // console.log("Hello 3",tripDetails.tripData);
 
   return (
     <View style={{ flex: 1 }}>
@@ -110,7 +113,7 @@ if (loading || !tripDetails) {
                   {data?.flightData && <FlightInfo flightData={data.flightData} />}
 
                   {/* hotels list*/}  
-                  {data?.hotelsList && <HotelList hotelList={data.hotelsList} />}
+                  {data?.hotelList && <HotelList hotelList={data.hotelList} />}
 
                    {/* Trip Day Planner Info */}
                   {data?.travelPlan && <PlannedTrip details={data.travelPlan} />}

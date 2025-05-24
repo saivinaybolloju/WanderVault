@@ -10,18 +10,27 @@ export default function UserTripList({userTrips}) {
   if (!userTrips || userTrips.length === 0) return null; 
     const LatestTrip = userTrips[0];
     const tripData = LatestTrip?.tripData || {};
-  const travelPlan = LatestTrip?.travelPlan || {};
-//   console.log('LatestTrip:', LatestTrip);
+    const travelPlan = tripData?.travelPlan || {};
+// console.log('LatestTrip:', LatestTrip);
 // console.log('\ntripData-location:', tripData.location);
-  const imageUrl = travelPlan?.day1?.plan?.[0]?.placeImageUrl
-    ? {uri: travelPlan.day1.plan[0].placeImageUrl}
-    : require('./../../assets/images/logo1.jpeg');
+  const imageUrl = travelPlan?.day1?.plan?.[0]?.photoRef
+  ? {uri: `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${travelPlan.day1.plan[0].photoRef}&key=${process.env.EXPO_PUBLIC_GOOGLE_MAP_KEY}`,}
+  : travelPlan?.day1?.plan?.[0]?.placeImageUrl
+  ? { uri: travelPlan.day1.plan[0].placeImageUrl }
+  : require('./../../assets/images/logo1.jpeg');
 
+    // console.log("tripData",tripData);
+    // console.log("day1:", travelPlan?.day1);
+    // console.log("plan[0]:", travelPlan?.day1?.plan?.[0]);
+    // console.log("placeImageUrl:", travelPlan?.day1?.plan?.[0]?.placeImageUrl);
+    // console.log("Seconf Ref:"+travelPlan?.day1?.plan?.[0]?.placeImageUrl)
+    
 
   return (
     <View>
       <View style={{
-        marginTop:20 
+        marginTop:20,
+        paddingBottom:300, 
       }}>
         <Image
         source={imageUrl}

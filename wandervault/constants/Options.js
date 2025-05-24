@@ -53,24 +53,25 @@ export const AI_Prompt=`Generate a detailed travel plan in strict and valid JSON
 
 The JSON should include:
 1. location: Destination name.
-2. startDate: Mentioned date.
-3. traveler: Mentioned traveler (e.g., Solo, Couple, Family, Group).
-4. budget: Mentioned budget tier (e.g., Cheap, Moderate, Luxury).
-5. flightData: { 
+2. photoRef: string,{photoRef of location which can be acessed with google maps api}
+3. startDate: Mentioned date.
+4. traveler: Mentioned traveler (e.g., Solo, Couple, Family, Group).
+5. budget: Mentioned budget tier (e.g., Cheap, Moderate, Luxury).
+6. flightData: { 
    airline: string, 
    price: string, 
    bookingUrl: string 
 }
-6. hotelList: An array of at least 3 hotel options with:
+7. hotelList: An array of at least 3 hotel options with:
    - hotelName
    - hotelAddress
    - price
-   - hotelImageUrl
+   - hotelImageUrl :string,{photoRef of location which can be acessed with google maps api}
    - geoCoordinates: { latitude, longitude }
    - rating
    - description
 
-7. travelPlan: A breakdown per day as:
+8. travelPlan: A breakdown per day as:
 {
   day1: {
     bestTimeToVisit: string,
