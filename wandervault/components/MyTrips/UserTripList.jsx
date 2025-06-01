@@ -1,11 +1,29 @@
  import { View, Text, Image,TouchableOpacity } from 'react-native'
-import React from 'react'
+import React,{useState,useEffect} from 'react'
 import moment from 'moment'
 import { useRouter } from 'expo-router';
 import { Colors } from '../../constants/Colors'
 import UserTripCard from'./UserTripCard'
-export default function UserTripList({userTrips}) {
+import { getImageUrl } from '../../services/imageUrl';
+import { GetPhotoRef } from '../../services/GooglePlaceApi';
 
+
+export default function UserTripList({userTrips}) {
+  const [photoRef,setPhotoRef]=useState();
+ useEffect(() => {
+   if (tripData?.location) {
+     GetGooglePhotoRef(tripData?.location);
+   }
+ }, [userTrips]);
+ 
+     const GetGooglePhotoRef=async(location)=>{
+       const result = await GetPhotoRef(location);
+      //  console.log("BIG BIG ANSWER : "+JSON.stringify(result.places[0].photos[0]));
+       const photoReference = result.places[0].photos[0].name.split('/photos/')[1];
+       setPhotoRef(photoReference);
+      //  setImageUrl(photoReference);
+     }
+ const imageUrl = {uri: `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${photoRef}&key=${process.env.EXPO_PUBLIC_GOOGLE_MAP_KEY}`};
   const router=useRouter();
   if (!userTrips || userTrips.length === 0) return null; 
     const LatestTrip = userTrips[0];
@@ -13,11 +31,11 @@ export default function UserTripList({userTrips}) {
     const travelPlan = tripData?.travelPlan || {};
 // console.log('LatestTrip:', LatestTrip);
 // console.log('\ntripData-location:', tripData.location);
-  const imageUrl = travelPlan?.day1?.plan?.[0]?.photoRef
-  ? {uri: `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${travelPlan.day1.plan[0].photoRef}&key=${process.env.EXPO_PUBLIC_GOOGLE_MAP_KEY}`,}
-  : travelPlan?.day1?.plan?.[0]?.placeImageUrl
-  ? { uri: travelPlan.day1.plan[0].placeImageUrl }
-  : require('./../../assets/images/logo1.jpeg');
+  // const imageUrl = travelPlan?.day1?.plan?.[0]?.photoRef
+  // ? {uri: `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${travelPlan.day1.plan[0].photoRef}&key=${process.env.EXPO_PUBLIC_GOOGLE_MAP_KEY}`,}
+  // : travelPlan?.day1?.plan?.[0]?.placeImageUrl
+  // ? { uri: travelPlan.day1.plan[0].placeImageUrl }
+  // : require('./../../assets/images/logo1.jpeg');
 
     // console.log("tripData",tripData);
     // console.log("day1:", travelPlan?.day1);

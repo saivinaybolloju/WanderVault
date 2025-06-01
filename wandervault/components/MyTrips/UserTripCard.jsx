@@ -1,16 +1,39 @@
 import { View, Text,Image,TouchableOpacity, ScrollView } from 'react-native'
-import React from 'react'
+import React,{useState,useEffect} from 'react'
 import moment from 'moment'
 import { useRouter } from 'expo-router';
 import { Colors } from '../../constants/Colors'
+import { getImageUrl } from '../../services/imageUrl';
+import { GetPhotoRef } from '../../services/GooglePlaceApi';
+
+
 
 export default function UserTripCard({trip}) {
+
+  const [photoRef,setPhotoRef]=useState();
+
+  useEffect(() => {
+     if (data?.location) {
+       GetGooglePhotoRef(data?.location);
+     }
+   }, [data]);
+   
+       const GetGooglePhotoRef=async(location)=>{
+         const result = await GetPhotoRef(location);
+        //  console.log("BIG BIG ANSWER : "+JSON.stringify(result.places[0].photos[0]));
+         const photoReference = result.places[0].photos[0].name.split('/photos/')[1];
+         setPhotoRef(photoReference);
+        //  setImageUrl(photoReference);
+       }
+   const imageUrl = {uri: `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${photoRef}&key=${process.env.EXPO_PUBLIC_GOOGLE_MAP_KEY}`};
+  
+
   const router=useRouter();
   const data =trip.tripData;
   if (!data) return null;
-  const imageUrl = data?.photoRef
-  ? { uri: `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${data?.photoRef}&key=${process.env.EXPO_PUBLIC_GOOGLE_MAP_KEY}` }
-  : require('./../../assets/images/logo1.jpeg');
+  // const imageUrl = data?.photoRef
+  // ? { uri: `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${data?.photoRef}&key=${process.env.EXPO_PUBLIC_GOOGLE_MAP_KEY}` }
+  // : require('./../../assets/images/logo1.jpeg');
   // console.log("THIs is Mine"+data?.photoRef);
 
   return (
