@@ -12,6 +12,6 @@ export const GetPhotoRef = async (placeName) => {
   });
 
   const result = await response.json();
-  console.log(result);
+  // console.log(result);
   return result;
 };
