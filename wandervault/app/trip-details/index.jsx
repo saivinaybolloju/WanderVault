@@ -2,25 +2,27 @@ import { View, Text, Image, ScrollView, Linking} from 'react-native'
 import React, { useState, useEffect } from 'react';  
 import { useNavigation } from '@react-navigation/native';
 import { useLocalSearchParams } from 'expo-router';
-import FlightInfo from './../../components/TripDetails/FlightInfo' ;
+import FlightInfo from './../../components/TripDetails/FlightInfo';
 import HotelList from '../../components/TripDetails/HotelList';
 import PlannedTrip from '../../components/TripDetails/PlannedTrip';
 import { Colors } from '../../constants/Colors';
 import moment from 'moment'
+import { GetPhotoRef } from '../../services/GooglePlaceApi';
+import { setImageUrl } from '../../services/imageUrl';
 
 export default function TripDetails() {
+  const [photoRef,setPhotoRef]=useState();
 
   const navigation=useNavigation();
   const {trip}=useLocalSearchParams();
   const [tripDetails,setTripDetails]=useState(null);
   const [loading, setLoading] = useState(true);
+  
   // const formatData=(data)=>{
   //   return JSON.parse(data);
   // }
   
   useEffect(()=>{
-    
-    
     navigation.setOptions({
         headerShown:true,
         headerTransparent:true,
@@ -29,7 +31,9 @@ export default function TripDetails() {
     if(trip){
        try {
         const parsedTrip=JSON.parse(trip);
-        console.log("Received trip data: ", parsedTrip); 
+        // console.log("Received trip data: ", parsedTrip); 
+        // console.log("THIS IS ANS1 " + parsedTrip);
+      // console.log("THIS IS ANS2 " + parsedTrip.tripData.location);
       setTripDetails(parsedTrip);
       setLoading(false);
     } catch (error) {
@@ -38,6 +42,21 @@ export default function TripDetails() {
     }
       
   },[])
+
+    useEffect(() => {
+  if (tripDetails?.tripData?.location) {
+    GetGooglePhotoRef(tripDetails.tripData.location);
+  }
+}, [tripDetails]);
+
+    const GetGooglePhotoRef=async(location)=>{
+      const result = await GetPhotoRef(location);
+      // console.log("BIG BIG ANSWER : "+JSON.stringify(result.places[0].photos[0]));
+      const photoReference = result.places[0].photos[0].name.split('/photos/')[1];
+      setPhotoRef(photoReference);
+      // setImageUrl(photoReference);
+    }
+const imageUrl = {uri: `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${photoRef}&key=${process.env.EXPO_PUBLIC_GOOGLE_MAP_KEY}`};
   
 if (loading || !tripDetails) {
   return (
@@ -47,10 +66,10 @@ if (loading || !tripDetails) {
   );
 }
   const data=tripDetails.tripData||{};
-  const photoRef = data.photoRef;
-  const imageUrl = photoRef
-    ? `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${photoRef}&key=${process.env.EXPO_PUBLIC_GOOGLE_MAP_KEY}`
-    : require('./../../assets/images/logo1.jpeg');
+  // const photoRef = data.photoRef;
+  // const imageUrl = photoRef
+  //   ? `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${photoRef}&key=${process.env.EXPO_PUBLIC_GOOGLE_MAP_KEY}`
+  //   : require('./../../assets/images/logo1.jpeg');
     // console.log("Hello Worldd",data);
     // console.log("photoRef",photoRef);
     // console.log("Hello2 ",tripDetails);
@@ -61,7 +80,7 @@ if (loading || !tripDetails) {
       
         <ScrollView>
 
-        <Image source={typeof imageUrl === 'string' ? { uri: imageUrl } : imageUrl}
+        <Image source={imageUrl}
                   style={{
                     width:'100%',
                       height:300,
