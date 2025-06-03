@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 
 export default function FlightInfo({flightData}) {
     useEffect(()=>{
-      console.log("New",flightData);
+      // console.log("New",flightData);
     });
 
   if(!flightData){
