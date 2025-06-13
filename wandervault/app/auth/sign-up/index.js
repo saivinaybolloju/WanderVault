@@ -65,9 +65,15 @@ export default function SignUp() {
       const errorCode = error.code;
       const errorMessage = error.message;
       console.log(errorCode,errorMessage);
-      if(errorCode=='auth/weak-password'){
-        showToast("Password Min. Length should be 6 ");
-      }
+      if (errorCode === 'auth/weak-password') {
+    showToast("Password must be at least 6 characters.");
+  } else if (errorCode === 'auth/email-already-in-use') {
+    showToast("Email already in use.");
+  } else if (errorCode === 'auth/invalid-email') {
+    showToast("Invalid email format.");
+  } else {
+    showToast("Something went wrong. Try again.");
+  }
       // ..
     });
   }
