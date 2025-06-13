@@ -15,7 +15,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.saivinaybolloju.wandervault"
     },
     "web": {
       "bundler": "metro",
@@ -37,6 +38,15 @@
     "experiments": {
       "typedRoutes": true
     },
-    "sdkVersion": "52.0.0"
+    "sdkVersion": "52.0.0",
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "7aa4db9f-b969-49db-b01b-2fb08ac69fce"
+      }
+    },
+    "owner": "saivinaybolloju"
   }
 }
